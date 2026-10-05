@@ -1,0 +1,169 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model StoreSettings {
+  id                 String   @id @default("store")
+  name               String
+  googleListingName  String
+  tagline            String
+  description        String
+  address            String
+  city               String
+  postalCode         String
+  country            String
+  phone              String
+  email              String
+  plusCode           String
+  latitude           Float
+  longitude          Float
+  googleMapsUrl      String
+  googleShareUrl     String
+  rating             Float
+  reviewCount        Int
+  currency           String   @default("PKR")
+  taxRate            Float    @default(0)
+  deliveryFee        Float    @default(150)
+  freeDeliveryMin    Float    @default(2000)
+  minOrderAmount     Float    @default(300)
+  pickupEnabled      Boolean  @default(true)
+  deliveryEnabled    Boolean  @default(true)
+  cashOnly           Boolean  @default(true)
+  hoursJson          String
+  heroImage          String
+  updatedAt          DateTime @updatedAt
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String
+  sortOrder   Int       @default(0)
+  products    Product[]
+}
+
+model Product {
+  id          String      @id @default(cuid())
+  name        String
+  slug        String      @unique
+  description String
+  price       Float
+  compareAt   Float?
+  categoryId  String
+  category    Category    @relation(fields: [categoryId], references: [id])
+  image       String
+  stock       Int         @default(0)
+  unit        String      @default("piece")
+  isActive    Boolean     @default(true)
+  isFeatured  Boolean     @default(false)
+  tags        String      @default("")
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  orderItems  OrderItem[]
+  stockMoves  StockMove[]
+}
+
+model Customer {
+  id        String   @id @default(cuid())
+  name      String
+  email     String?
+  phone     String
+  address   String?
+  notes     String?
+  createdAt DateTime @default(now())
+  orders    Order[]
+}
+
+model Coupon {
+  id            String    @id @default(cuid())
+  code          String    @unique
+  description   String
+  type          String    // percent | fixed
+  value         Float
+  minOrder      Float     @default(0)
+  maxUses       Int?
+  usedCount     Int       @default(0)
+  isActive      Boolean   @default(true)
+  expiresAt     DateTime?
+  createdAt     DateTime  @default(now())
+  orders        Order[]
+}
+
+model Order {
+  id              String      @id @default(cuid())
+  orderNumber     String      @unique
+  customerId      String?
+  customer        Customer?   @relation(fields: [customerId], references: [id])
+  guestName       String
+  guestPhone      String
+  guestEmail      String?
+  fulfillment     String      // pickup | delivery
+  address         String?
+  status          String      @default("pending")
+  // pending | confirmed | preparing | out_for_delivery | ready | completed | cancelled
+  paymentMethod   String      @default("cash_on_delivery")
+  paymentStatus   String      @default("pending")
+  subtotal        Float
+  discount        Float       @default(0)
+  deliveryFee     Float       @default(0)
+  tax             Float       @default(0)
+  total           Float
+  couponId        String?
+  coupon          Coupon?     @relation(fields: [couponId], references: [id])
+  couponCode      String?
+  notes           String?
+  trackingToken   String      @unique
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  items           OrderItem[]
+  ledgerEntries   LedgerEntry[]
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  name      String
+  price     Float
+  quantity  Int
+  lineTotal Float
+}
+
+model StockMove {
+  id        String   @id @default(cuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  delta     Int
+  reason    String
+  note      String?
+  createdAt DateTime @default(now())
+}
+
+model LedgerEntry {
+  id          String   @id @default(cuid())
+  type        String   // sale | expense | cash_in | cash_out | adjustment
+  category    String
+  description String
+  amount      Float
+  entryDate   DateTime @default(now())
+  orderId     String?
+  order       Order?   @relation(fields: [orderId], references: [id])
+  createdAt   DateTime @default(now())
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         String   @default("admin")
+  createdAt    DateTime @default(now())
+}

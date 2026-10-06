@@ -18,7 +18,7 @@ export default async function HomePage() {
 
   return (
     <div>
-      <section className="relative min-h-[92vh] overflow-hidden">
+      <section className="relative min-h-[86svh] overflow-hidden sm:min-h-[92vh]">
         <Image
           src={settings.heroImage}
           alt="Al Madinah Pakwan and Sheermal House storefront"
@@ -30,46 +30,50 @@ export default async function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-r from-[#1c1410]/90 via-[#1c1410]/55 to-[#1c1410]/25" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#1c1410]/70 via-transparent to-[#1c1410]/30" />
 
-        <div className="relative mx-auto flex min-h-[92vh] max-w-6xl flex-col justify-end px-4 pb-16 sm:px-6 sm:pb-20">
-          <p className="animate-rise text-sm tracking-[0.28em] text-[var(--brand-gold)] uppercase">
+        <div className="relative mx-auto flex min-h-[86svh] max-w-6xl flex-col justify-end px-4 pt-20 pb-14 sm:min-h-[92vh] sm:px-6 sm:pb-20">
+          <p className="animate-rise text-xs font-medium tracking-[0.24em] text-[var(--brand-gold)] uppercase sm:text-sm">
             Gulistan-e-Johar · Karachi
           </p>
-          <h1 className="animate-rise-delay mt-3 max-w-3xl font-[family-name:var(--font-display)] text-5xl leading-[0.95] text-[#fff7ef] sm:text-6xl md:text-7xl">
+          <h1 className="animate-rise-delay mt-3 max-w-3xl font-[family-name:var(--font-display)] text-[2.15rem] leading-[1.02] text-[#fff7ef] sm:text-6xl md:text-7xl">
             Al Madinah Pakwan and Sheermal House
           </h1>
-          <div className="brand-underline mt-5 h-1 w-28 rounded-full" />
-          <p className="animate-rise-delay mt-6 max-w-xl text-base leading-relaxed text-[#f6ebe0]/88 sm:text-lg">
+          <div className="brand-underline mt-4 h-1 w-24 rounded-full sm:mt-5 sm:w-28" />
+          <p className="animate-rise-delay mt-5 max-w-xl text-[0.95rem] leading-relaxed text-[#f6ebe0]/88 sm:mt-6 sm:text-lg">
             {settings.tagline}
           </p>
-          <div className="animate-rise-delay mt-8 flex flex-wrap items-center gap-3">
-            <LinkButton href="/menu" size="lg" className="bg-[var(--brand-chili)] px-6 hover:bg-[#6f1717]">
+          <div className="animate-rise-delay mt-7 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:flex-wrap sm:items-center">
+            <LinkButton
+              href="/menu"
+              size="lg"
+              className="h-13 w-full justify-center rounded-full bg-[var(--brand-chili)] px-7 text-base shadow-lg shadow-black/25 hover:bg-[#6f1717] sm:h-auto sm:w-auto sm:rounded-lg sm:text-sm sm:shadow-none"
+            >
               Order from the menu <ArrowRight className="size-4" />
             </LinkButton>
             <LinkButton
               href="/track"
               size="lg"
               variant="outline"
-              className="border-[#f6ebe0]/40 bg-transparent text-[#fff7ef] hover:bg-[#fff7ef]/10 hover:text-white"
+              className="h-13 w-full justify-center rounded-full border-[#f6ebe0]/40 bg-transparent text-base text-[#fff7ef] hover:bg-[#fff7ef]/10 hover:text-white sm:h-auto sm:w-auto sm:rounded-lg sm:border-2 sm:text-sm"
             >
               Track an order
             </LinkButton>
           </div>
-          <div className="mt-8 flex flex-wrap gap-5 text-sm text-[#f6ebe0]/8">
-            <span className="inline-flex items-center gap-2">
-              <Star className="size-4 fill-[var(--brand-gold)] text-[var(--brand-gold)]" />
-              {settings.rating.toFixed(1)} · {settings.reviewCount} Google reviews
+          <div className="animate-rise-delay mt-7 flex flex-wrap gap-2.5 text-sm text-[#f6ebe0]/85">
+            <span className="inline-flex items-center gap-2 rounded-full border border-[#f6ebe0]/20 bg-black/25 px-3 py-1.5 backdrop-blur-sm">
+              <Star className="size-3.5 fill-[var(--brand-gold)] text-[var(--brand-gold)]" />
+              {settings.rating.toFixed(1)} · {settings.reviewCount} reviews
             </span>
-            <span className="inline-flex items-center gap-2">
-              <MapPin className="size-4 text-[var(--brand-gold)]" />
-              {settings.address}
+            <span className="inline-flex max-w-full items-center gap-2 rounded-full border border-[#f6ebe0]/20 bg-black/25 px-3 py-1.5 backdrop-blur-sm">
+              <MapPin className="size-3.5 shrink-0 text-[var(--brand-gold)]" />
+              <span className="truncate">{settings.address}</span>
             </span>
           </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+      <section className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-16">
         <div className="max-w-2xl">
-          <h2 className="font-[family-name:var(--font-display)] text-3xl text-[var(--brand-ink)] sm:text-4xl">
+          <h2 className="font-[family-name:var(--font-display)] text-2xl text-[var(--brand-ink)] sm:text-4xl">
             From the tandoor and the tray kitchen
           </h2>
           <p className="mt-3 text-[var(--brand-ink)]/70">
@@ -77,12 +81,12 @@ export default async function HomePage() {
             family gatherings.
           </p>
         </div>
-        <div className="mt-8 flex flex-wrap gap-3">
+        <div className="no-scrollbar snap-rail -mx-4 mt-7 flex gap-2.5 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
           {categories.map((c) => (
             <Link
               key={c.id}
               href={`/menu?category=${c.slug}`}
-              className="border border-[#e0cdb4] bg-[#fffaf3]/70 px-4 py-2 text-sm transition hover:border-[var(--brand-chili)] hover:text-[var(--brand-chili)]"
+              className="tap shrink-0 rounded-full border border-[#e0cdb4] bg-[#fffaf3]/80 px-4 py-2.5 text-sm font-medium whitespace-nowrap transition active:scale-[0.97] hover:border-[var(--brand-chili)] hover:text-[var(--brand-chili)]"
             >
               {c.name}
             </Link>
@@ -90,12 +94,15 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 pb-20 sm:px-6">
-        <div className="mb-8 flex items-end justify-between gap-4">
-          <h2 className="font-[family-name:var(--font-display)] text-3xl text-[var(--brand-ink)]">
+      <section className="mx-auto max-w-6xl px-4 pb-14 sm:px-6 sm:pb-20">
+        <div className="mb-5 flex items-end justify-between gap-4 sm:mb-8">
+          <h2 className="font-[family-name:var(--font-display)] text-2xl text-[var(--brand-ink)] sm:text-3xl">
             House favorites
           </h2>
-          <Link href="/menu" className="text-sm font-medium text-[var(--brand-chili)] hover:underline">
+          <Link
+            href="/menu"
+            className="tap rounded-full px-1 py-1 text-sm font-medium text-[var(--brand-chili)] hover:underline"
+          >
             View full menu
           </Link>
         </div>
@@ -104,7 +111,7 @@ export default async function HomePage() {
             Menu items are being refreshed. Please check back shortly.
           </p>
         ) : (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-3">
             {featured.map((p) => (
               <ProductCard key={p.id} product={p} />
             ))}
@@ -123,9 +130,9 @@ export default async function HomePage() {
           />
           <div className="absolute inset-0 bg-[#f7f1e8]/85" />
         </div>
-        <div className="relative mx-auto grid max-w-6xl gap-10 px-4 py-16 sm:px-6 md:grid-cols-2 md:items-center">
+        <div className="relative mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:gap-10 sm:px-6 sm:py-16 md:grid-cols-2 md:items-center">
           <div>
-            <h2 className="font-[family-name:var(--font-display)] text-3xl text-[var(--brand-ink)] sm:text-4xl">
+            <h2 className="font-[family-name:var(--font-display)] text-2xl text-[var(--brand-ink)] sm:text-4xl">
               A Gulistan-e-Johar kitchen guests return to
             </h2>
             <p className="mt-4 text-[var(--brand-ink)]/75 leading-relaxed">{settings.description}</p>

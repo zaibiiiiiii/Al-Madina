@@ -20,7 +20,7 @@ export function SiteFooter({ settings }: { settings: Settings }) {
 
   return (
     <footer className="mt-auto border-t border-[#e0cdb4] bg-[#221610] text-[#f6ebe0]">
-      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-3">
+      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:gap-10 sm:px-6 sm:py-12 md:grid-cols-3">
         <div>
           <h2 className="font-[family-name:var(--font-display)] text-2xl text-[var(--brand-gold)]">
             {settings.name}
@@ -62,18 +62,18 @@ export function SiteFooter({ settings }: { settings: Settings }) {
 
         <div className="space-y-3 text-sm">
           <h3 className="text-xs tracking-[0.18em] text-[var(--brand-gold)] uppercase">Links</h3>
-          <div className="flex flex-col gap-2">
-            <Link href="/menu" className="hover:text-[var(--brand-gold)]">
+          <div className="flex flex-col">
+            <Link href="/menu" className="tap -mx-2 rounded-lg px-2 py-2 hover:text-[var(--brand-gold)]">
               Full menu
             </Link>
-            <Link href="/track" className="hover:text-[var(--brand-gold)]">
+            <Link href="/track" className="tap -mx-2 rounded-lg px-2 py-2 hover:text-[var(--brand-gold)]">
               Track an order
             </Link>
             <a
               href={settings.googleShareUrl}
               target="_blank"
               rel="noreferrer"
-              className="hover:text-[var(--brand-gold)]"
+              className="tap -mx-2 rounded-lg px-2 py-2 hover:text-[var(--brand-gold)]"
             >
               Google Business listing
             </a>
@@ -81,7 +81,7 @@ export function SiteFooter({ settings }: { settings: Settings }) {
               href={settings.googleMapsUrl}
               target="_blank"
               rel="noreferrer"
-              className="hover:text-[var(--brand-gold)]"
+              className="tap -mx-2 rounded-lg px-2 py-2 hover:text-[var(--brand-gold)]"
             >
               Open in Google Maps
             </a>

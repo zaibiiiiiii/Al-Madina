@@ -33,23 +33,23 @@ export default async function MenuPage({
   });
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+    <div className="mx-auto max-w-6xl px-4 pt-6 sm:px-6 sm:pt-10">
       <div className="max-w-2xl">
-        <h1 className="font-[family-name:var(--font-display)] text-4xl text-[var(--brand-ink)]">
+        <h1 className="font-[family-name:var(--font-display)] text-3xl text-[var(--brand-ink)] sm:text-4xl">
           Menu
         </h1>
-        <p className="mt-2 text-[var(--brand-ink)]/70">
+        <p className="mt-2 text-sm text-[var(--brand-ink)]/70 sm:text-base">
           Sheermal, pakwan trays, biryani, and tandoor breads — priced in PKR for pickup or delivery
           across Johar.
         </p>
       </div>
 
-      <div className="mt-8">
+      <div className="sticky top-14 z-30 -mx-4 mt-4 border-b border-[#e0cdb4]/60 bg-[#f7f1e8]/95 px-4 py-3 backdrop-blur-md sm:top-16 sm:mx-0 sm:mt-8 sm:rounded-2xl sm:border sm:bg-[#fffaf3]/70 sm:px-4 sm:backdrop-blur-none">
         <MenuFiltersClient categories={categories} />
       </div>
 
       {products.length === 0 ? (
-        <div className="mt-12 rounded border border-dashed border-[#e0cdb4] bg-[#fffaf3]/60 p-10 text-center">
+        <div className="mt-10 rounded-2xl border border-dashed border-[#e0cdb4] bg-[#fffaf3]/60 p-10 text-center">
           <p className="font-[family-name:var(--font-display)] text-2xl text-[var(--brand-ink)]">
             No dishes match that filter
           </p>
@@ -58,11 +58,16 @@ export default async function MenuPage({
           </p>
         </div>
       ) : (
-        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {products.map((p) => (
-            <ProductCard key={p.id} product={p} />
-          ))}
-        </div>
+        <>
+          <p className="mt-4 mb-3 text-xs tracking-wide text-[var(--brand-ink)]/50 sm:text-sm">
+            {products.length} {products.length === 1 ? "item" : "items"}
+          </p>
+          <div className="grid grid-cols-2 gap-3 pb-6 sm:gap-6 lg:grid-cols-3">
+            {products.map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))}
+          </div>
+        </>
       )}
     </div>
   );

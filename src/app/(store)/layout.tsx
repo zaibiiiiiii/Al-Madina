@@ -1,3 +1,4 @@
+import { BottomNav } from "@/components/store/bottom-nav";
 import { SiteFooter } from "@/components/store/site-footer";
 import { SiteHeader } from "@/components/store/site-header";
 import { prisma } from "@/lib/db";
@@ -10,10 +11,11 @@ export default async function StoreLayout({ children }: { children: React.ReactN
   const settings = await prisma.storeSettings.findUniqueOrThrow({ where: { id: "store" } });
 
   return (
-    <>
+    <div className="flex min-h-dvh flex-col pb-[calc(4rem+var(--safe-bottom))] md:pb-0">
       <SiteHeader />
       <main className="flex-1">{children}</main>
       <SiteFooter settings={settings} />
-    </>
+      <BottomNav />
+    </div>
   );
 }

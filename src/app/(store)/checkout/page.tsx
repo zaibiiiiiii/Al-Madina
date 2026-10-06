@@ -96,9 +96,9 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="mx-auto grid max-w-5xl gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[1.2fr_0.8fr]">
-      <form onSubmit={submit} className="space-y-5">
-        <h1 className="font-[family-name:var(--font-display)] text-4xl text-[var(--brand-ink)]">
+    <div className="mx-auto grid max-w-5xl gap-8 px-4 pt-6 pb-36 sm:px-6 sm:pt-10 lg:grid-cols-[1.2fr_0.8fr] lg:gap-10 lg:pb-10">
+      <form id="checkout-form" onSubmit={submit} className="store-form space-y-5">
+        <h1 className="font-[family-name:var(--font-display)] text-3xl text-[var(--brand-ink)] sm:text-4xl">
           Checkout
         </h1>
         <p className="text-sm text-[var(--brand-ink)]/65">
@@ -106,29 +106,42 @@ export default function CheckoutPage() {
           (no real payment processor).
         </p>
 
-        <div className="flex gap-3">
-          <Button
-            type="button"
-            variant={fulfillment === "pickup" ? "default" : "outline"}
-            className={fulfillment === "pickup" ? "bg-[var(--brand-chili)]" : ""}
-            disabled={settings ? !settings.pickupEnabled : false}
-            onClick={() => setFulfillment("pickup")}
-          >
-            Pickup
-          </Button>
-          <Button
-            type="button"
-            variant={fulfillment === "delivery" ? "default" : "outline"}
-            className={fulfillment === "delivery" ? "bg-[var(--brand-chili)]" : ""}
-            disabled={settings ? !settings.deliveryEnabled : false}
-            onClick={() => setFulfillment("delivery")}
-          >
-            Delivery
-          </Button>
-        </div>
+        <section className="rounded-2xl border border-[#e0cdb4]/80 bg-[#fffaf3] p-4">
+          <h2 className="text-xs font-semibold tracking-[0.16em] text-[var(--brand-ink)]/50 uppercase">
+            1 · How would you like it?
+          </h2>
+          <div className="mt-3 grid grid-cols-2 gap-2 rounded-2xl border border-[#e0cdb4] bg-[#f7f1e8] p-1.5">
+            <Button
+              type="button"
+              variant={fulfillment === "pickup" ? "default" : "ghost"}
+              className={
+                fulfillment === "pickup"
+                  ? "h-11 rounded-xl bg-[var(--brand-chili)] text-base text-white shadow-sm"
+                  : "h-11 rounded-xl text-base"
+              }
+              disabled={settings ? !settings.pickupEnabled : false}
+              onClick={() => setFulfillment("pickup")}
+            >
+              Pickup
+            </Button>
+            <Button
+              type="button"
+              variant={fulfillment === "delivery" ? "default" : "ghost"}
+              className={
+                fulfillment === "delivery"
+                  ? "h-11 rounded-xl bg-[var(--brand-chili)] text-base text-white shadow-sm"
+                  : "h-11 rounded-xl text-base"
+              }
+              disabled={settings ? !settings.deliveryEnabled : false}
+              onClick={() => setFulfillment("delivery")}
+            >
+              Delivery
+            </Button>
+          </div>
+        </section>
 
         {fulfillment === "pickup" && settings && (
-          <div className="border border-[#e0cdb4] bg-[#fffaf3]/80 p-4 text-sm">
+          <div className="rounded-2xl border border-[#e0cdb4]/80 bg-[#fffaf3] p-4 text-sm">
             <p className="font-medium">Pickup at store</p>
             <p className="mt-1 text-[var(--brand-ink)]/70">
               {settings.address}, {settings.city} {settings.postalCode}
@@ -137,6 +150,9 @@ export default function CheckoutPage() {
           </div>
         )}
 
+        <h2 className="pt-2 text-xs font-semibold tracking-[0.16em] text-[var(--brand-ink)]/50 uppercase">
+          2 · Your details
+        </h2>
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-2">
             <Label htmlFor="name">Full name</Label>
@@ -211,13 +227,13 @@ export default function CheckoutPage() {
           type="submit"
           size="lg"
           disabled={loading}
-          className="bg-[var(--brand-chili)] hover:bg-[#6f1717]"
+          className="hidden h-12 w-full rounded-full bg-[var(--brand-chili)] text-base hover:bg-[#6f1717] md:inline-flex"
         >
           {loading ? "Placing order…" : "Place order (mock cash)"}
         </Button>
       </form>
 
-      <aside className="h-fit border border-[#e0cdb4] bg-[#fffaf3]/80 p-5">
+      <aside className="h-fit rounded-2xl border border-[#e0cdb4] bg-[#fffaf3]/80 p-5">
         <h2 className="font-[family-name:var(--font-display)] text-2xl">Order summary</h2>
         <ul className="mt-4 space-y-2 text-sm">
           {items.map((i) => (
@@ -250,6 +266,27 @@ export default function CheckoutPage() {
           )}
         </div>
       </aside>
+
+      {/* Mobile sticky place-order bar */}
+      <div className="fixed inset-x-0 bottom-[calc(4rem+var(--safe-bottom))] z-30 flex items-center gap-4 border-t border-[#e0cdb4] bg-[#fffaf3]/96 px-4 py-3 shadow-[0_-8px_24px_rgba(28,20,16,0.08)] backdrop-blur-md md:hidden">
+        <div className="min-w-0">
+          <p className="text-[11px] tracking-wide text-[var(--brand-ink)]/55 uppercase">Total</p>
+          <p className="truncate text-lg leading-tight font-semibold text-[var(--brand-chili)]">
+            {formatPKR(estimated)}
+          </p>
+        </div>
+        <Button
+          type="submit"
+          form="checkout-form"
+          disabled={loading}
+          onClick={() =>
+            (document.getElementById("checkout-form") as HTMLFormElement | null)?.requestSubmit()
+          }
+          className="ml-auto h-12 flex-1 rounded-full bg-[var(--brand-chili)] px-6 text-base font-semibold text-white shadow-md shadow-[#8b1e1e]/25 hover:bg-[#6f1717]"
+        >
+          {loading ? "Placing…" : "Place order"}
+        </Button>
+      </div>
     </div>
   );
 }

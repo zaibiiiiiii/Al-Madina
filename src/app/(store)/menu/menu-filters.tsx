@@ -2,6 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTransition } from "react";
+import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
@@ -30,22 +31,26 @@ export function MenuFilters({ categories }: { categories: Category[] }) {
   }
 
   return (
-    <div className={cn("space-y-4", pending && "opacity-70")}>
-      <Input
-        defaultValue={q}
-        placeholder="Search sheermal, korma, biryani…"
-        className="max-w-md bg-[#fffaf3]"
-        onChange={(e) => update({ q: e.target.value })}
-      />
-      <div className="flex flex-wrap gap-2">
+    <div className={cn("space-y-3 transition-opacity", pending && "opacity-60")}>
+      <div className="relative">
+        <Search className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-[var(--brand-ink)]/40" />
+        <Input
+          defaultValue={q}
+          placeholder="Search sheermal, korma, biryani…"
+          aria-label="Search the menu"
+          className="h-12 rounded-full border-[#e0cdb4] bg-[#fffaf3] pr-4 pl-11 shadow-sm placeholder:text-[var(--brand-ink)]/40"
+          onChange={(e) => update({ q: e.target.value })}
+        />
+      </div>
+      <div className="no-scrollbar snap-rail -mx-4 flex gap-2 overflow-x-auto px-4 sm:mx-0 sm:flex-wrap sm:px-0">
         <button
           type="button"
           onClick={() => update({ category: "" })}
           className={cn(
-            "border px-3 py-1.5 text-sm transition",
+            "tap h-9 shrink-0 rounded-full border px-4 text-sm font-medium whitespace-nowrap transition active:scale-95",
             !active
-              ? "border-[var(--brand-chili)] bg-[var(--brand-chili)] text-white"
-              : "border-[#e0cdb4] bg-[#fffaf3] hover:border-[var(--brand-chili)]",
+              ? "border-[var(--brand-chili)] bg-[var(--brand-chili)] text-white shadow-sm"
+              : "border-[#e0cdb4] bg-[#fffaf3] hover:border-[var(--brand-chili)] hover:text-[var(--brand-chili)]",
           )}
         >
           All
@@ -56,10 +61,10 @@ export function MenuFilters({ categories }: { categories: Category[] }) {
             type="button"
             onClick={() => update({ category: c.slug })}
             className={cn(
-              "border px-3 py-1.5 text-sm transition",
+              "tap h-9 shrink-0 rounded-full border px-4 text-sm font-medium whitespace-nowrap transition active:scale-95",
               active === c.slug
-                ? "border-[var(--brand-chili)] bg-[var(--brand-chili)] text-white"
-                : "border-[#e0cdb4] bg-[#fffaf3] hover:border-[var(--brand-chili)]",
+                ? "border-[var(--brand-chili)] bg-[var(--brand-chili)] text-white shadow-sm"
+                : "border-[#e0cdb4] bg-[#fffaf3] hover:border-[var(--brand-chili)] hover:text-[var(--brand-chili)]",
             )}
           >
             {c.name}
